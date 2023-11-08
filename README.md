@@ -4,7 +4,7 @@
 본 페이지는 한국조폐공사에서 개방한 가맹점기본정보 API를 활용하여 지도에서 검색할 수 있도록 만든 예시코드입니다.
 
 # Repository
-[https://github.com/laylow861/laylow861.github.io](https://github.com/laylow861/laylow861.github.io)
+[https://github.com/laylow861/laylow861.github.io](https://github.com/localpay/localpay.github.io)
 
 # 예시 화면
 ![예시 화면][screen_sample]
