@@ -11,10 +11,16 @@
 
 
 # 사용한 데이터
-[공공데이터포털 한국조폐공사_통합_가맹점기본정보 ][komsco-api] - 해당 API의 활용신청을 통해 API KEY 를 발급
+[공공데이터포털 한국조폐공사_통합_가맹점기본정보 ][komsco_api] - 해당 API의 활용신청을 통해 API KEY 를 발급
 
 # 그외 외부 서비스
-[카카오지도 API][kakao-map-api] - 우측 상단의 APP KEY 발급
+[카카오지도 API][kakao_map_api] 
+ * 키 발급 방법:
+   * 1. [https://developers.kakao.com/console/app)](https://developers.kakao.com/console/app) 에서 카카오 로그인 후, 애플리케이션 추가.
+   * 2. 애플리케이션 상세페이지의 플랫폼 설정하기 클릭 도는 좌측 상단 메뉴의 플랫폼 선택
+   * 3. Web 플랫폼 등록 클릭
+   * 4. 해당 소스코드를 구동할 도메인 등록
+
 
 # `service-key.js` 생성
 `service-key-sample.js` 파일을 복사하여 `service-key.js` 신규 파일 생성
@@ -47,5 +53,7 @@ index.html 파일을 더블클릭하여 브라우저로 실행
 ![한국조폐공사][komsco_logo]
 
 
+[komsco_api]: https://www.data.go.kr/data/15119539/openapi.do "공공데이터포털 한국조폐공사 통합가맹점기본정보"
+[kakao_map_api]: https://apis.map.kakao.com/ "카카오 지도 API"
 [komsco_logo]: ./ref/komsco_logo.jpg "한국조폐공사"
 [screen_sample]: ./ref/screen_sample.png "화면 예시"
