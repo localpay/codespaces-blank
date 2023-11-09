@@ -21,7 +21,8 @@ DataManager.prototype.fetchData = async function() {
     self.totalCount = 0;
     self.data = [];
 
-    self.callAPI();
+    const res = await self.callAPI();
+    self.appendData(res);
     self.aggregateSameLocationMap();
 
     return [ self.totalCount, self.data, self.dataMap ];
@@ -36,7 +37,8 @@ DataManager.prototype.callNextPage = async function() {
   try {
     self.page++;
 
-    self.callAPI();
+    const res = await self.callAPI();
+    self.appendData(res);
     self.aggregateSameLocationMap();
 
     return [ self.totalCount, self.data, self.dataMap ];
@@ -45,7 +47,39 @@ DataManager.prototype.callNextPage = async function() {
   }
 }
 
-DataManager.prototype.callAPI = function() {
+DataManager.prototype.appendData = async function(res) {
+  var self = this;
+
+  self.totalCount = res.matchCount;
+  self.data = self.data.concat(_.map(res.data, function(d) {
+    var result = {
+      id: `${d["brno"]}_${d["frcs_zip"]}`,
+      brno: d["brno"],
+      distance: geoDistance(d["lat"], d["lot"], self.lat, self.lon),
+      frcsAddr: nullToEmpty(d["frcs_addr"]),
+      frcsDtlAddr: nullToEmpty(d["frcs_dtl_addr"]),
+      frcsNm: d["frcs_nm"],
+      frcsRegSe: d["frcs_reg_se"],
+      frcsRegSeNm: d["frcs_reg_se_nm"],
+      frcsRprsTelno: formatPhoneNumber(d["frcs_rprs_telno"]),
+      frcsStlmInfoSe: d["frcs_stlm_info_se"],
+      frcsStlmInfoSeNm: d["frcs_stlm_info_se_nm"],
+      fullAddress: `${nullToEmpty(d["frcs_addr"])} ${nullToEmpty(d["frcs_dtl_addr"])}`,
+      location: {lat: d["lat"], lon: d["lot"]},
+      onlDlvyEntUseYn: d["onl_dlvy_ent_use_yn"],
+      pprFrcsAplyYn: d["ppr_frcs_aply_yn"],
+      pvsnInstCd: d["pvsn_inst_cd"],
+      teGdsHdYn: d["te_gds_hd_yn"],
+      usageRgnCd: d["usage_rgn_cd"],
+    };
+
+    return result;
+  }));
+  curCount = res.currentCount;
+
+}
+
+DataManager.prototype.callAPI = async function() {
   var self = this;
 
   var curCount = 0;
@@ -58,45 +92,25 @@ DataManager.prototype.callAPI = function() {
     perPage: self.perPage,
   };
   if (self.keyword) requestJSON["cond[frcs_nm::LIKE]"] = self.keyword;
-  if (self.giftCardType) requestJSON["cond[frcs_reg_se::EQ]"] = self.giftCardType;
+  if (self.giftCardType) requestJSON["cond[frcs_stlm_info_se::LIKE]"] = self.giftCardType;
   if (usageRgnCd) requestJSON["cond[usage_rgn_cd::EQ]"] = usageRgnCd;
   
-  $.ajax({
-    url: `${self.fetchURL}?${new URLSearchParams(requestJSON).toString()}`,
-    method: "GET",
-    async: false,
-    success: function(res) {
-      self.totalCount = res.matchCount;
-      self.data = self.data.concat(_.map(res.data, function(d) {
-        var result = {
-          id: `${d["brno"]}_${d["frcs_zip"]}`,
-          brno: d["brno"],
-          distance: geoDistance(d["lat"], d["lot"], self.lat, self.lon),
-          frcsAddr: nullToEmpty(d["frcs_addr"]),
-          frcsDtlAddr: nullToEmpty(d["frcs_dtl_addr"]),
-          frcsNm: d["frcs_nm"],
-          frcsRegSe: d["frcs_reg_se"],
-          frcsRegSeNm: d["frcs_reg_se_nm"],
-          frcsRprsTelno: formatPhoneNumber(d["frcs_rprs_telno"]),
-          frcsStlmInfoSe: d["frcs_stlm_info_se"],
-          frcsStlmInfoSeNm: d["frcs_stlm_info_se_nm"],
-          fullAddress: `${nullToEmpty(d["frcs_addr"])} ${nullToEmpty(d["frcs_dtl_addr"])}`,
-          location: {lat: d["lat"], lon: d["lot"]},
-          onlDlvyEntUseYn: d["onl_dlvy_ent_use_yn"],
-          pprFrcsAplyYn: d["ppr_frcs_aply_yn"],
-          pvsnInstCd: d["pvsn_inst_cd"],
-          teGdsHdYn: d["te_gds_hd_yn"],
-          usageRgnCd: d["usage_rgn_cd"],
-        };
 
-        return result;
-      }));
-      curCount = res.currentCount;
-    },
-    error: function(e) {
-      alert("통신중 오류가 발생하였습니다.");
-    }
+  return new Promise( function (resolve, reject) {
+    $.ajax({
+      url: `${self.fetchURL}?${new URLSearchParams(requestJSON).toString()}`,
+      method: "GET",
+      success: function(res) {
+        resolve(res);
+      },
+      error: function(e) {
+        alert("통신중 오류가 발생하였습니다.");
+        reject(e);
+      }
+    });
   });
+
+  
 }
 
 
