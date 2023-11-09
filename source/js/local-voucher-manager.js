@@ -100,7 +100,7 @@ LocalVoucherManager.prototype.init = function() {
         var keyword = document.getElementById("keywordInput").value;
         var giftCardType = document.getElementById("giftTypeSelect").value;
 
-        await localVoucherManager.searchFranchises(keyword, giftCardType);
+        await self.searchFranchises(keyword, giftCardType);
         $("#placesList > :first-child").click();
     });
 }
