@@ -83,6 +83,8 @@ DataManager.prototype.callAPI = async function() {
   var self = this;
 
   var curCount = 0;
+
+  // API 검색조건 설정: 자세한 호출방법은 https://www.data.go.kr/data/15119539/openapi.do 참고
   var requestJSON = {
     serviceKey: apiServiceKey,
     // "cond[lat::GT]": -360,    // 위경도 없는 데이터 제외할 경우 사용
