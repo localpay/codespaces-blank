@@ -85,9 +85,9 @@ DataManager.prototype.callAPI = async function() {
   var curCount = 0;
   var requestJSON = {
     serviceKey: apiServiceKey,
-    "cond[lat::GT]": -360,
-    "cond[lot::GT]": -360,
-    "cond[bzmn_stts::EQ]": "01",
+    // "cond[lat::GT]": -360,    // 위경도 없는 데이터 제외할 경우 사용
+    // "cond[lot::GT]": -360,    // 위경도 없는 데이터 제외할 경우 사용
+    // // "cond[bzmn_stts::EQ]": "01", // 사업자 상태가 '계속' 인 경우만 조회 시 사용
     page: self.page,
     perPage: self.perPage,
   };

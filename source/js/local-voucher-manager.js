@@ -5,9 +5,16 @@ var LocalVoucherManager = function(options) {
         }
     });
 
-    /* 조폐공사 위,경도 */
-    this.initLat = 36.37725787826933;
-    this.initLon = 127.3693460226059;
+    
+    // 사용처지역코드가 지정되어 있을 경우에는 해당 지역의 중심좌표를 첫 지도 중심으로 사용
+    if (usageRgnCd) {
+        this.initLat = sggCodes[usageRgnCd].lat;
+        this.initLon = sggCodes[usageRgnCd].lon;
+    } else { // 아닐 경우에는 조폐공사 위,경도 사용
+        this.initLat = 36.37725787826933;
+        this.initLon = 127.3693460226059;
+    }
+    
     
     this.spinner = new Spinner();
     this.dataManager = new DataManager({});
@@ -59,7 +66,6 @@ LocalVoucherManager.prototype.initRenderMap = async function() {
     self.mapManager.createMap(initLocation);
     self.mapManager.renderCurrentMarker(initLocation);
     await self.searchFranchises('');
-    $("#placesList > :first-child").click();
 }
 
 LocalVoucherManager.prototype.init = function() {
@@ -70,9 +76,13 @@ LocalVoucherManager.prototype.init = function() {
     document.addEventListener('click', function(e) {
         /* 동일 위치 여러 가맹점 목록 클릭 이벤트 */
         var placeListItem = e.target.closest('.place-list-item');
+        var showItem = e.target.closest('.show-item');
 
-        /* 목록 아이템 클릭 이벤트 */
-        if (placeListItem) {
+        if (showItem) {
+            var franchise = self.dataManager.getFranchiseById(showItem.dataset.id);
+            self.mapManager.hideFranchiseInfo();
+            self.mapManager.showFranchiseContent(franchise);
+        } else if (placeListItem) {
             var parentId = placeListItem.parentElement.id;
 
             if (parentId === 'bottomContentWrap') return;
@@ -86,8 +96,13 @@ LocalVoucherManager.prototype.init = function() {
                 var franchise = self.dataManager.getFranchiseById(placeLi.dataset.id);
                 self.mapManager.togglePlaceList();
                 self.mapManager.hideFranchiseInfo();
+                
+                if (!franchise.location.lat || !franchise.location.lon) {
+                    alert("지도에 표시 할 수 없습니다.");
+                    return;
+                }
 
-                self.mapManager.setFranchiseMarker(franchise);
+                self.mapManager.setFranchiseMarker(franchise);              
                 self.mapManager.showFranchiseContent(franchise);
             }
         }

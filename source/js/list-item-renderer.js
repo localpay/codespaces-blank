@@ -8,11 +8,12 @@ var ListItemRenderer = function(options) {
 }
 
 ListItemRenderer.prototype.getSameLocationTemplate = function(latLon, franchises) {
-  var $container = $("<div>");
-  $container.addClass("show-item-wrap");
-  $container.attr("data-lat-lng", latLon);
+  var $root = $("<div>");
+  var $container = $(`<div class="show-item-wrap" data-lat-lng="${latLon}" ></div>`);
 
-  if (!franchises || franchises.length == 0) return $container;
+  $root.append($container);
+
+  if (!franchises || franchises.length == 0) return $root.html();
   var size = franchises.length;
 
   _.forEach(franchises, function(franchise, idx) {
@@ -32,7 +33,7 @@ ListItemRenderer.prototype.getSameLocationTemplate = function(latLon, franchises
     }
   });
 
-  return $container;
+  return $root.html();
 }
 
 ListItemRenderer.prototype.renderItems = function(totalCount, data) {

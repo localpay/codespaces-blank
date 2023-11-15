@@ -276,3 +276,31 @@ body {
 .map-content {
   height: calc(100vh - 248px);
 }
+
+.show-item-wrap {
+  min-width: 200px;
+  max-height: 160px;
+  border-radius: 10px;
+  overflow-y: auto;
+}
+.show-item-wrap .show-item {
+  color: #4E92FB;
+  background: white;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: 6px 8px;
+}
+.show-item-wrap .show-item:hover, .show-item-wrap .show-item.active {
+  background: #4E92FB;
+  color: white;
+}
+.item-divider {
+  margin: 0 8px;
+  border-bottom: 1px solid #DADADA;
+}
+.marker-wrap {
+  border: none !important;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}

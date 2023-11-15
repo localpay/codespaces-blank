@@ -3,7 +3,7 @@ var MapManager = function(options) {
     mapId: "",
   });
 
-  this.defaultLevel = 3;
+  this.defaultLevel = 7;
   this.map;
 
   this.listRenderer = new ListItemRenderer({});
@@ -227,7 +227,7 @@ MapManager.prototype.showFranchisesNameList = function(location, franchises) {
   var self = this;
 
   var latLon = `${location.lat}_${location.lon}`;
-  var html = self.listItemRenderer.getSameLocationFranchises(latLon, franchises);
+  var html = self.listRenderer.getSameLocationTemplate(latLon, franchises);
   self.infoWindow = self.createInfoWindow(self.map, self.franchiseMarkerPointMap[latLon], html, 100);
 
   var kakaoWrapper = document.querySelector(`.show-item-wrap[data-lat-lng="${latLon}"]`);
@@ -408,7 +408,7 @@ MapManager.prototype.showFranchiseContent = function(franchise) {
   self.bottomContentWrap.innerHTML = self.listRenderer.getItemHTML(franchise);
 
   self.map.panTo(self.franchiseMarkerPointMap[latLon]);
-  self.map.setLevel(2);
+  self.map.setLevel(3);
 }
 
 MapManager.prototype.setFranchiseMarker = function(franchise) {
