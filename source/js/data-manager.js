@@ -111,8 +111,6 @@ DataManager.prototype.callAPI = async function() {
       }
     });
   });
-
-  
 }
 
 

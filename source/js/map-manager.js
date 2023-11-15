@@ -361,6 +361,7 @@ MapManager.prototype.showSameNameFranchise = function(franchises) {
   var keyword = keywordInput.value;
 
   for (var franchise of franchises) {
+      if (!franchise.location.lat || !franchise.location.lon) continue;
       if (franchise.frcsNm === keyword) {
           self.showFranchiseContent(franchise);
           return;

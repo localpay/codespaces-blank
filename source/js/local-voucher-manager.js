@@ -116,6 +116,5 @@ LocalVoucherManager.prototype.init = function() {
         var giftCardType = document.getElementById("giftTypeSelect").value;
 
         await self.searchFranchises(keyword, giftCardType);
-        $("#placesList > :first-child").click();
     });
 }
