@@ -1,7 +1,7 @@
 var DataManager = function(options) {
   this.options = _.defaults(options, {});
 
-  this.fetchURL = 'https://apis.data.go.kr/B190001/localFranchises/franchise';
+  this.fetchURL = 'https://apis.data.go.kr/B190001/localFranchisesV2/franchiseV2';
 
   this.defaultPage = 1;
   this.defaultPerPage = 2000;
